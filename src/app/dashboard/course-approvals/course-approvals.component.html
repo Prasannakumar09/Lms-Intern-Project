@@ -1,0 +1,124 @@
+<div class="course-container card border-0 shadow-sm mt-4">
+  <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+    <h5 class="mb-0 fw-bold text-primary">
+      <i class="bi bi-journal-bookmark me-2 text-secondary"></i>Course Approvals
+    </h5>
+    <span class="badge bg-light text-dark fs-6 px-3">{{ totalCourses }} Courses</span>
+  </div>
+
+  <div class="filter-bar d-flex flex-wrap align-items-center gap-3 p-3 bg-white border-bottom shadow-sm-sm">
+    <div class="input-group input-group-sm w-auto">
+      <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+      <input type="text" class="form-control" placeholder="Search by title" [formControl]="searchCtrl" />
+    </div>
+
+    <div class="input-group input-group-sm w-auto">
+      <span class="input-group-text bg-light"><i class="bi bi-tags"></i></span>
+      <select class="form-select" [formControl]="categoryCtrl">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of uniqueCategories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+
+    <div class="input-group input-group-sm w-auto">
+      <span class="input-group-text bg-light"><i class="bi bi-flag"></i></span>
+      <select class="form-select" [formControl]="statusCtrl">
+        <option value="">All Status</option>
+        <option *ngFor="let st of uniqueStatuses" [value]="st">{{ st | titlecase }}</option>
+      </select>
+    </div>
+
+    <button class="btn btn-outline-secondary btn-sm ms-auto" (click)="resetFilters()">
+      <i class="bi bi-arrow-clockwise"></i> Reset
+    </button>
+  </div>
+
+
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead class="table-header">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Pricing</th>
+          <th>Status</th>
+          <th *ngIf="user === 'Admin'" class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of paginatedCourses" class="row-hover">
+          <td class="fw-semibold text-dark">{{ course.title }}</td>
+          <td class="text-muted small">
+            {{
+              course.description.length > 60
+                ? (course.description | slice: 0:60) + '...'
+                : course.description
+            }}
+          </td>
+          <td>{{ course.category }}</td>
+          <td>₹{{ course.pricing }}</td>
+          <td>
+            <span
+              class="status-badge"
+              [ngClass]="{
+                'approved': course.status === 'approved',
+                'pending': course.status === 'pending',
+                'rejected': course.status === 'reject'
+              }"
+            >
+              {{ course.status | titlecase }}
+            </span>
+          </td>
+
+          <td *ngIf="user === 'Admin'" class="text-center">
+            <ng-container *ngIf="course.status === 'pending'; else locked">
+              <div class="dropdown">
+                <button
+                  class="btn btn-outline-primary btn-sm dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                >
+                  Manage
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                  <li>
+                    <a class="dropdown-item text-success" (click)="updateStatus(course._id, 'approved')">
+                      <i class="bi bi-check-circle me-2"></i>Approve
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-danger" (click)="updateStatus(course._id, 'reject')">
+                      <i class="bi bi-x-circle me-2"></i>Reject
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </ng-container>
+            <ng-template #locked>
+              <i class="bi bi-lock-fill text-muted"></i>
+            </ng-template>
+          </td>
+        </tr>
+
+        <tr *ngIf="showEmptyState">
+          <td colspan="6" class="text-center py-4 text-muted">
+            <i class="bi bi-inbox fs-4 me-2"></i>No courses found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-bar border-top bg-light d-flex justify-content-center align-items-center py-3">
+    <button class="btn btn-outline-primary btn-sm me-2" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+      ‹ Prev
+    </button>
+    <span class="text-secondary small">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button class="btn btn-outline-primary btn-sm ms-2" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+      Next ›
+    </button>
+  </div>
+</div>

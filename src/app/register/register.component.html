@@ -1,0 +1,83 @@
+<div class="login-wrapper">
+  <div class="edu-icon book"></div>
+  <div class="edu-icon hat"></div>
+  <div class="edu-icon bulb"></div>
+  <div class="edu-icon ruler"></div>
+  <div class="floating-icons">
+    <i class="bi bi-book"></i>
+    <i class="bi bi-lightbulb"></i>
+    <i class="bi bi-pencil"></i>
+    <i class="bi bi-mortarboard"></i>
+  </div>
+  <div class="login-container">
+    <div class="left-panel">
+       <img src="../../assets/satule image.png" alt="" class="main-image">
+    </div>
+    <div class="right-panel">
+      <h2 class="title text-center">Welcome Back</h2>
+      <p class="subtitle">Please log in to continue your learning</p>
+
+      <form [formGroup]="registerform" (ngSubmit)="onSignup()" class="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Enter your username"
+            formControlName="username"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerform.get('username')?.touched &&
+                registerform.get('username')?.invalid,
+              'is-valid':
+                registerform.get('username')?.touched &&
+                registerform.get('username')?.valid
+            }"
+          />
+          <div
+            class="error"
+            *ngIf="
+              registerform.get('username')?.touched &&
+              registerform.get('username')?.invalid
+            "
+          >
+            Username is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="mt-3">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerform.get('password')?.touched &&
+                registerform.get('password')?.invalid,
+              'is-valid':
+                registerform.get('password')?.touched &&
+                registerform.get('password')?.valid
+            }"
+          />
+          <div
+            class="error"
+            *ngIf="
+              registerform.get('password')?.touched &&
+              registerform.get('password')?.invalid
+            "
+          >
+            Password is required
+          </div>
+        </div>
+
+        <button type="submit" class="btn" [disabled]="registerform.invalid">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

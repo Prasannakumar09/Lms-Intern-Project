@@ -1,0 +1,84 @@
+<div class="announcement-wrapper container-fluid py-3">
+  <div class="announcement-header d-flex justify-content-between align-items-center px-4 py-3 mb-4 shadow-sm rounded-4">
+    <div>
+      <h4 class="fw-bold text-gradient mb-1">
+        <i class="bi bi-megaphone-fill me-2"></i>Announcements
+      </h4>
+      <p class="text-muted small mb-0">Stay updated with the latest organizational news and insights</p>
+    </div>
+
+    <div *ngIf="user === 'mentor'">
+      <button
+        class="btn btn-primary-gradient fw-semibold px-4 py-2 rounded-3 me-2"
+        data-bs-toggle="modal"
+        data-bs-target="#announce"
+      >
+        <i class="bi bi-plus-circle me-2"></i> New Announcement
+      </button>
+      <button
+        class="btn btn-outline-secondary fw-semibold px-4 py-2 rounded-3"
+        (click)="refreshAnnouncements()"
+      >
+        <i class="bi bi-arrow-clockwise me-2"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-md-6 col-xl-4" *ngFor="let announce of announcement">
+      <div class="announcement-card card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h6 class="fw-semibold text-primary mb-0">{{ announce.title }}</h6>
+            <span class="text-muted small">{{ announce.createdAt | date: 'MMM dd, yyyy' }}</span>
+          </div>
+          <p class="text-secondary small lh-base">{{ announce.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="announce" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header modal-header-gradient text-white rounded-top-4">
+        <h6 class="modal-title fw-semibold mb-0">
+          <i class="bi bi-megaphone-fill me-2"></i> Create Announcement
+        </h6>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="announcementform" (ngSubmit)="onPost()">
+          <div class="mb-3">
+            <label for="title" class="form-label fw-semibold small">Title</label>
+            <input
+              type="text"
+              id="title"
+              class="form-control form-control-lg"
+              formControlName="title"
+              placeholder="Enter announcement title"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="content" class="form-label fw-semibold small">Content</label>
+            <textarea
+              id="content"
+              rows="4"
+              class="form-control form-control-lg"
+              formControlName="content"
+              placeholder="Write your announcement..."
+            ></textarea>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary-gradient fw-semibold px-4 py-2 rounded-3">
+              <i class="bi bi-send-fill me-2"></i> Post
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

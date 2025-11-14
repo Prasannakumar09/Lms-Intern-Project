@@ -1,0 +1,149 @@
+<div class="user-container card border-0 shadow-sm mt-4">
+  <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+    <h5 class="mb-0 fw-bold text-primary">
+      <i class="bi bi-people-fill me-2 text-secondary"></i>User Management
+    </h5>
+    <span class="badge bg-light text-dark fs-6 px-3">{{ users.length }} Users</span>
+  </div>
+
+  <div class="filter-bar d-flex flex-wrap align-items-center gap-3 p-3 bg-white border-bottom shadow-sm-sm">
+    <div class="input-group input-group-sm w-auto">
+      <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+      <input
+        type="text"
+        class="form-control w-75"
+        placeholder="Search by name, email, or role"
+        [(ngModel)]="filterText"
+        (input)="applyFilter()"
+        style="width: 250px !important;"
+      />
+    </div>
+
+    <button class="btn btn-outline-secondary btn-sm ms-auto" (click)="filterText=''; applyFilter()">
+      <i class="bi bi-arrow-clockwise"></i> Reset
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table  align-middle mb-0">
+      <thead class="table-header">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mentor of paginatedUser" class="row-hover">
+          <td class="fw-semibold text-dark">{{ mentor.username }}</td>
+          <td class="text-muted">{{ mentor.email }}</td>
+          <td>
+            <span
+              class="status-badge"
+              [ngClass]="{
+                'admin': mentor.role === 'Admin',
+                'mentor': mentor.role === 'mentor',
+                'student': mentor.role === 'student'
+              }"
+            >
+              {{ mentor.role }}
+            </span>
+          </td>
+          <td class="text-center">
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-primary btn-sm dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+              >
+                Manage
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                <li>
+                  <a
+                    class="dropdown-item text-primary"
+                    (click)="Editform(mentor)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editform"
+                  >
+                    <i class="bi bi-pencil-square me-2"></i>Edit
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-danger" (click)="ondelete(mentor._id)">
+                    <i class="bi bi-trash3 me-2"></i>Delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="4" class="text-center py-4 text-muted">
+            <i class="bi bi-inbox fs-4 me-2"></i>No users found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-bar border-top bg-light d-flex justify-content-center align-items-center py-3">
+    <button
+      class="btn btn-outline-primary btn-sm me-2"
+      [disabled]="currentPage === 1"
+      (click)="changePage(currentPage - 1)"
+    >
+      ‹ Prev
+    </button>
+    <span class="text-secondary small">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button
+      class="btn btn-outline-primary btn-sm ms-2"
+      [disabled]="currentPage === totalPages"
+      (click)="changePage(currentPage + 1)"
+    >
+      Next ›
+    </button>
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editform" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-primary text-white border-0">
+        <h5 class="modal-title fw-bold m-0">
+          <i class="bi bi-pencil-square me-2"></i> Edit User
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="adduserform" (ngSubmit)="formPatch()">
+          <div class="mb-3">
+            <label for="name" class="form-label"><i class="bi bi-person me-1"></i> Name</label>
+            <input type="text" id="name" formControlName="username" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label"><i class="bi bi-envelope me-1"></i> Email</label>
+            <input type="email" id="email" formControlName="email" class="form-control" />
+          </div>
+          <div class="mb-4">
+            <label for="role" class="form-label"><i class="bi bi-shield-check me-1"></i> Role</label>
+            <select id="role" formControlName="role" class="form-select">
+              <option value="" disabled selected>-- Select Role --</option>
+              <option value="mentor">Mentor</option>
+              <option value="student">Student</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="adduserform.invalid" data-bs-dismiss="modal">
+            <i class="bi bi-check-circle me-2"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,242 @@
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h4 class="fw-semibold mb-0 head-gradient">Approved Courses</h4>
+
+    <div class="position-relative" style="max-width: 300px; width: 100%">
+      <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-primary"></i>
+      <input
+        type="text"
+        class="form-control ps-5 rounded-pill shadow-sm"
+        placeholder="Search by title..."
+        [(ngModel)]="searchTitle"
+        (input)="applyFilters()"
+      />
+    </div>
+  </div>
+
+  <div class="table-responsive shadow-sm rounded-top-4 bg-white">
+    <table class="table align-middle table-hover text-center mb-0">
+      <thead class="table-light border-bottom">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Pricing</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let course of paginatedCourses" class="table-row-hover">
+          <td class="fw-semibold text-dark">{{ course.title }}</td>
+          <td class="text-muted">
+            {{
+              course.description.length > 30
+                ? (course.description | slice : 0 : 30) + "..."
+                : course.description
+            }}
+          </td>
+          <td class="text-secondary">{{ course.category }}</td>
+          <td>
+            <span
+              class="badge rounded-pill"
+              [ngClass]="{
+                'bg-success-subtle text-success': course.status === 'Approved',
+                'bg-warning-subtle text-warning': course.status !== 'Approved'
+              }"
+            >
+              {{ course.status }}
+            </span>
+          </td>
+          <td class="fw-semibold text-dark">{{ course.pricing === '0' ? 'Free' : '₹'+course.pricing }}</td>
+
+          <td class="text-center">
+        <div class="dropdown">
+          <button
+                class="btn btn-sm btn-outline-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-gear me-1"></i>Actions
+              </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3 py-1">
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-2"
+                 data-bs-toggle="modal"
+                 data-bs-target="#viewLessonsModal"
+                 (click)="getLessons(course._id)">
+                <i class="bi bi-eye me-1 text-primary"></i> View
+              </a>
+            </li>
+            <li *ngIf="role === 'mentor'">
+              <a class="dropdown-item d-flex align-items-center gap-2"
+                 data-bs-toggle="modal"
+                 data-bs-target="#addLessonModal"
+                 (click)="pdfModal(course._id)">
+                <i class="bi bi-plus-circle me-1 text-success"></i> Add
+              </a>
+            </li>
+          </ul>
+        </div>
+      </td>
+        </tr>
+
+        <tr *ngIf="filteredCourses.length === 0">
+          <td colspan="6" class="text-muted py-4">
+            No approved courses found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination-container fixed-pagination py-3 shadow-sm bg-white rounded-bottom-4">
+      <button
+        class="btn btn-sm btn-outline-primary me-2"
+        [disabled]="currentPage === 1"
+        (click)="changePage(currentPage - 1)"
+      >
+        ‹ Prev
+      </button>
+
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+
+      <button
+        class="btn btn-sm btn-outline-primary ms-2"
+        [disabled]="currentPage === totalPages"
+        (click)="changePage(currentPage + 1)"
+      >
+        Next ›
+      </button>
+    </div>
+</div>
+
+<div
+  class="modal fade"
+  id="viewLessonsModal"
+  tabindex="-1"
+  aria-labelledby="viewLessonsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 shadow-sm lavender-modal">
+      <div class="modal-header bg-theme border-0">
+        <h5 class="modal-title text-light fw-semibold" id="viewLessonsModalLabel">
+          <i class="bi bi-journal-text me-2"></i>View Lessons
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body px-4 py-3">
+        <div *ngIf="lessons.length === 0" class="text-center text-muted py-4">
+          No lessons added yet for this course.
+        </div>
+
+        <div *ngIf="lessons.length > 0" class="table-responsive">
+          <table class="table table-striped align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th>Title</th>
+                <th>Mentor Name</th>
+                <th>PDF</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let lesson of lessons">
+                <td>{{ lesson.title }}</td>
+                <td>{{ lesson.mentorname }}</td>
+                <td>
+                  <div class="d-flex justify-content-center gap-2">
+                    <a
+                      [href]="baseURL + lesson.pdf"
+                      target="_blank"
+                      class="btn btn-sm btn-outline-modal-primary"
+                    >
+                      <i class="bi bi-eye-fill me-1"></i>View
+                    </a>
+                    <a
+                      [href]="baseURL + lesson.pdf"
+                      [attr.download]="lesson.title + '.pdf'"
+                      class="btn btn-sm btn-outline-success"
+                    >
+                      <i class="bi bi-download me-1"></i>Download
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addLessonModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow-sm lavender-modal">
+      <div class="modal-header bg-theme border-0">
+        <h5 class="modal-title text-light fw-semibold" id="addLessonModalLabel">
+          <i class="bi bi-file-earmark-plus-fill me-2"></i> Add New Lesson
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body px-4 py-3">
+        <form [formGroup]="lessonsForm" (ngSubmit)="onAdd()">
+          <div class="mb-3">
+            <label for="title" class="form-label fw-semibold small">Title</label>
+            <input
+              type="text"
+              id="title"
+              class="form-control form-control-sm rounded-3 shadow-sm"
+              formControlName="title"
+              placeholder="Enter lesson title"
+            />
+            <div *ngIf="lessonsForm.get('title')?.invalid && lessonsForm.get('title')?.touched" class="text-danger small mt-1">
+              Title is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="pdf" class="form-label fw-semibold small">Upload PDF</label>
+            <input
+              type="file"
+              id="pdf"
+              accept="application/pdf"
+              (change)="onFileSelected($event)"
+              class="form-control form-control-sm rounded-3 shadow-sm"
+            />
+            <div *ngIf="lessonsForm.get('pdf')?.errors?.['invalidType']" class="text-danger small mt-1">
+              Only PDF files are allowed.
+            </div>
+            <div *ngIf="lessonsForm.get('pdf')?.errors?.['fileTooLarge']" class="text-danger small mt-1">
+              File size must be less than 10MB.
+            </div>
+          </div>
+
+          <div class="text-end">
+            <button
+              type="submit"
+              class="btn btn-theme btn-sm px-3 py-1 fw-semibold shadow-sm"
+              [disabled]="lessonsForm.invalid"
+            >
+              <i class="bi bi-send-fill me-1"></i> Upload
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

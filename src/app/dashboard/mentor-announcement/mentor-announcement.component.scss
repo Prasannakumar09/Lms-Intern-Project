@@ -1,0 +1,84 @@
+.announcement-wrapper {
+  background-color: #f8f9fb;
+  min-height: 100vh;
+}
+
+.announcement-header {
+  background: #ffffff;
+  border-left: 5px solid #0078d7;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #0078d7, #005bb5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-primary {
+  color: #0078d7 !important;
+}
+
+.text-secondary {
+  color: #5f6368;
+}
+
+.btn-primary-gradient {
+  background: linear-gradient(135deg, #0078d7, #005bb5);
+  border: none;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-gradient:hover {
+  background: linear-gradient(135deg, #005bb5, #003e8a);
+  transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+  border: 2px solid #d0d7de;
+  color: #444;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background: #f1f4f8;
+}
+
+/* === Cards === */
+.announcement-card {
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.announcement-card:hover {
+  box-shadow: 0 6px 18px rgba(0, 120, 215, 0.15);
+  transform: translateY(-3px);
+}
+
+/* === Modal === */
+.modal-header-gradient {
+  background: linear-gradient(135deg, #0078d7, #005bb5);
+}
+
+/* === Form Controls === */
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #0078d7;
+  box-shadow: 0 0 0 0.15rem rgba(0, 120, 215, 0.2);
+}
+
+/* === Animations === */
+.modal-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,125 @@
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.input-group-text {
+  border-radius: 10px 0 0 10px !important;
+}
+
+.form-select,
+.form-control {
+  border-radius: 10px !important;
+}
+
+button {
+  transition: all 0.2s ease;
+}
+button:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+.table-container {
+  max-height: 70vh;
+  // overflow-y: auto;
+  position: relative;
+}
+
+
+.fixed-pagination {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  border-top: 1px solid rgba(200, 200, 200, 0.3);
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+.lavender-btn {
+  background: linear-gradient(135deg, #7a5cf4, #b768f9);
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.lavender-btn:hover {
+  background: linear-gradient(135deg, #8c6efb, #c28cfb);
+  transform: translateY(-2px);
+}
+
+.page-info {
+  font-weight: 500;
+  color: #444;
+  margin: 0 1rem;
+}
+
+.gradient-title {
+  background: #1dacae;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.btn-gradient {
+  background: transparent;
+  border: 2px solid #7a42d8;
+  color: #7a42d8;
+  font-weight: 600;
+  border-radius: 10px !important;
+  padding: 6px 14px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 10px rgba(160, 100, 255, 0.15);
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #a37cf0, #b085f5);
+  color: #fff;
+  border: 2px solid transparent; 
+  box-shadow: 0 8px 20px rgba(160, 100, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+.themed-dropdown-small .dropdown-item {
+  font-weight: 600;
+  color: #4a2e8e;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  transition: 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.themed-dropdown-small .dropdown-item i {
+  color: #8b63e8;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.themed-dropdown-small .dropdown-item:hover {
+  background: #7a42d8;
+  color: #fff;
+  cursor: pointer;
+}
+
+.themed-dropdown-small .dropdown-item:hover i {
+  color: #fff;
+}
+
+@keyframes fadeInStatic {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

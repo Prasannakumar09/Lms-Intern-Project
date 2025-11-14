@@ -1,0 +1,174 @@
+.discussion-container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.discussion-header h4 {
+  font-size: 1.5rem;
+  letter-spacing: 0.3px;
+}
+
+.discussion-card {
+  background: #faf5ff;
+  border: 1px solid #e6dbff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+.discussion-card:hover {
+  box-shadow: 0 8px 20px rgba(150, 120, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.answers {
+  background: #f9f5ff;
+  border-radius: 16px;
+  border: 1px solid #d8c8ff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.text-theme {
+  color: #6c4ad0;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #8949f0, #a45de7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-theme {
+  background: linear-gradient(135deg, #a45de7, #8949f0);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.btn-theme:hover {
+  background: linear-gradient(135deg, #9c60ff, #7e3eff);
+  transform: translateY(-2px);
+}
+
+.btn-outline-theme {
+  border: 2px solid #b88cff;
+  color: #8949f0;
+  background: transparent;
+  transition: 0.3s;
+  width: 250px;
+}
+.btn-outline-theme:hover {
+  background: linear-gradient(135deg, #b88cff, #9b6cff);
+  color: #fff;
+}
+
+.lavender-textarea {
+  background-color: #f9f5ff;
+  border: 1px solid #e2d6ff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: #4a3a7f;
+  transition: all 0.25s ease;
+}
+.lavender-textarea::placeholder {
+  color: #9d8cc5;
+}
+.lavender-textarea:focus {
+  background-color: #fff;
+  border-color: #c9b3ff;
+  box-shadow: 0 0 0 3px rgba(201, 179, 255, 0.3);
+  outline: none;
+}
+
+.modal-content {
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 12px 30px rgba(90, 70, 150, 0.1);
+}
+
+.modal-backdrop.show {
+  background: rgba(91, 58, 156, 0.08);
+}
+
+
+.modal-content {
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.bg-theme {
+  background: linear-gradient(135deg, #a45de7, #8949f0);
+}
+.lavender-modal {
+  background: linear-gradient(135deg, #faf7ff, #f3edff);
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 8px 25px rgba(90, 70, 150, 0.1);
+  animation: modalFade 0.3s ease;
+}
+
+
+.lavender-modal .modal-title {
+  font-weight: 600;
+  color: #5b3a9c;
+  letter-spacing: 0.3px;
+}
+
+
+.lavender-textarea {
+  background-color: #f9f5ff;
+  border: 1px solid #e2d6ff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: #4a3a7f;
+  transition: all 0.25s ease;
+}
+
+.lavender-textarea::placeholder {
+  color: #9d8cc5;
+}
+
+.lavender-textarea:focus {
+  background-color: #fff;
+  border-color: #c9b3ff;
+  box-shadow: 0 0 0 3px rgba(201, 179, 255, 0.3);
+  outline: none;
+}
+
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-backdrop.show {
+  background: rgba(91, 58, 156, 0.1);
+}
+.btn-feedback {
+  background: linear-gradient(135deg, #f3e7ff, #e6dbff);
+  color: #5b3a9c;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.btn-feedback:hover {
+  background: linear-gradient(135deg, #e9dbff, #d8c8ff);
+  transform: translateY(-1px);
+}

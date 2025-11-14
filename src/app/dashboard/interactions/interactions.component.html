@@ -1,0 +1,53 @@
+<div class="announcement-wrapper rounded-3">
+  <div class="chat-container">
+    <div class="row chat-messages p-3" *ngFor="let chat of chattings">
+      <div class="col-12 d-flex justify-content-end" *ngIf="name === chat.username">
+        <div class="chat-right">
+          <div class="chat-header d-flex justify-content-between">
+            <span class="chat-name me-3">{{chat.username}}</span>
+            <span class="chat-role">~{{chat.role}}</span>
+          </div>
+          <div class="chat-body">
+            <span>{{chat.message}}</span>
+          </div>
+          <div class="chat-footer">
+            <span class="chat-time">{{chat.createdAt | date:'shortTime'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 d-flex justify-content-start" *ngIf="name !== chat.username">
+        <div class="chat-left">
+          <div class="chat-header d-flex justify-content-between">
+            <span class="chat-name me-3">{{chat.username}}</span>
+            <span class="chat-role">~{{chat.role}}</span>
+          </div>
+          <div class="chat-body">
+            <span>{{chat.message}}</span>
+          </div>
+          <div class="chat-footer">
+            <span class="chat-time">{{chat.createdAt | date:'shortTime'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input-area p-2">
+    <form
+      [formGroup]="messagein"
+      (ngSubmit)="send()"
+      class="d-flex align-items-center w-100"
+    >
+      <input
+        type="text"
+        class="form-control chat-input me-2"
+        formControlName="message"
+        placeholder="Type a message..."
+      />
+      <button class="btn btn-send" type="submit">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </form>
+  </div>
+</div>

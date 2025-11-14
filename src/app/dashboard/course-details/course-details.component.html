@@ -1,0 +1,306 @@
+<div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+  <h4 class="fw-semibold mb-0 head-gradient">
+    <i class="bi bi-journal-bookmark-fill me-2"></i>Course Management
+  </h4>
+  <button
+    class="btn shadow-sm px-3 btn-outline-theme"
+    (click)="addformreset()"
+    data-bs-toggle="modal"
+    data-bs-target="#addCourseModal"
+  >
+    <i class="bi bi-plus-circle me-1"></i> Add Course
+  </button>
+</div>
+
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body p-0">
+    <div class="p-3 border-bottom bg-light rounded-top-4">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-4">
+          <div class="position-relative">
+            <i
+              class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-primary"
+            ></i>
+            <input
+              type="text"
+              class="form-control ps-5"
+              placeholder="Search by title..."
+              [(ngModel)]="searchTitle"
+              (input)="applyFilters()"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <select
+            class="form-select"
+            [(ngModel)]="selectedCategory"
+            (change)="applyFilters()"
+          >
+            <option value="">All Categories</option>
+            <option *ngFor="let cat of uniqueCategories" [value]="cat">
+              {{ cat }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <select
+            class="form-select"
+            [(ngModel)]="selectedPrice"
+            (change)="applyFilters()"
+          >
+            <option value="">All Prices</option>
+            <option value="low">Free</option>
+            <option value="mid">$1 - $1000</option>
+            <option value="high">Above $1000</option>
+          </select>
+        </div>
+
+        <div class="col-md-1 text-end">
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            (click)="resetFilters()"
+          >
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <table class="table table-hover align-middle mb-0 text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Pricing</th>
+          <th>Mentor</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of paginatedCourses">
+          <td class="fw-semibold">{{ course.title }}</td>
+          <td>{{ course.description.slice(0, 15) + "..." }}</td>
+          <td>{{ course.category }}</td>
+          <td>${{ course.pricing }}</td>
+          <td>{{ course.mentorname }}</td>
+          <td>
+            <span
+              class="badge rounded-pill px-3 py-2"
+              [ngClass]="{
+                'bg-warning text-dark': course.status === 'pending',
+                'bg-success': course.status === 'approved',
+                'bg-danger': course.status === 'reject'
+              }"
+            >
+              {{ course.status }}
+            </span>
+          </td>
+          <td>
+            <div class="dropdown">
+              <button
+                class="btn btn-sm btn-outline-theme dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-gear me-1"></i>Actions
+              </button>
+              <ul class="dropdown-menu shadow-sm border-0 rounded-3">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    (click)="openEditModal(course)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editCourseModal"
+                  >
+                    <i class="bi bi-pencil-square me-2 text-primary"></i>Edit
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item text-danger"
+                    (click)="deleteCourse(course._id)"
+                  >
+                    <i class="bi bi-trash3 me-2"></i>Delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination-bar border-top bg-light d-flex justify-content-center align-items-center py-3">
+    <button class="btn btn-outline-primary btn-sm me-2" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+      ‹ Prev
+    </button>
+    <span class="text-secondary small">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button class="btn btn-outline-primary btn-sm ms-2" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+      Next ›
+    </button>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="addCourseModal"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="addCourseModalLabel">
+          <i class="bi bi-plus-circle me-2"></i>Add New Course
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <form [formGroup]="addcourse" (ngSubmit)="onSubmit()">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              formControlName="title"
+              class="form-control"
+              placeholder="Enter title"
+            />
+            <label>Course Title</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <textarea
+              formControlName="description"
+              class="form-control"
+              style="height: 100px"
+              placeholder="Enter description"
+            ></textarea>
+            <label>Description</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <select formControlName="category" class="form-select">
+              <option value="">Select Category</option>
+              <option value="Development">Development</option>
+              <option value="Design">Design</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+            <label>Category</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input
+              type="number"
+              formControlName="pricing"
+              class="form-control"
+              placeholder="Enter price"
+            />
+            <label>Pricing ($)</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              formControlName="mentorname"
+              readonly
+              class="form-control"
+            />
+            <label>Published By</label>
+          </div>
+
+          <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-success"[disabled]="addcourse.invalid">
+              <i class="bi bi-save me-1"></i>Save Course
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="editCourseModal"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title" id="editCourseModalLabel">
+          <i class="bi bi-pencil-square me-2"></i>Edit Course
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <form [formGroup]="addcourse" (ngSubmit)="updateCourse()">
+          <div class="form-floating mb-3">
+            <input type="text" formControlName="title" class="form-control" />
+            <label>Course Title</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <textarea
+              formControlName="description"
+              class="form-control"
+              style="height: 100px"
+            ></textarea>
+            <label>Description</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <select formControlName="category" class="form-select">
+              <option value="">Select Category</option>
+              <option value="Development">Development</option>
+              <option value="Design">Design</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+            <label>Category</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              formControlName="mentorname"
+              readonly
+              class="form-control"
+            />
+            <label>Published By</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input
+              type="number"
+              formControlName="pricing"
+              class="form-control"
+            />
+            <label>Pricing (₹)</label>
+          </div>
+
+          <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-arrow-repeat me-1" ></i>Update Course
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

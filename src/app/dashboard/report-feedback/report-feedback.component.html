@@ -1,0 +1,68 @@
+<div class="container py-4 feedback-section">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+    <h4 class="fw-bold mb-0 head-gradient">
+      <i class="bi bi-chat-square-heart me-2"></i>Course Feedbacks
+    </h4>
+    <span class="badge bg-light text-dark shadow-sm px-3 py-2">
+      <i class="bi bi-people-fill me-1 text-primary"></i>{{ feedbackDetails.length }} Total Feedbacks
+    </span>
+  </div>
+
+
+  <div class="row g-4">
+    <div
+      class="col-xl-3 col-lg-4 col-md-6 col-sm-12"
+      *ngFor="let f of feedbackDetails"
+    >
+      <div class="feedback-card p-4 shadow-sm rounded-4 bg-white">
+        <div class="d-flex align-items-center mb-3">
+          <div class="avatar-wrapper me-3">
+            <div class="avatar-ring"></div>
+            <div class="avatar-mini">
+              {{ f.userInfo.username[0] | uppercase }}
+            </div>
+          </div>
+          <div>
+            <div class="fw-semibold small text-dark">
+              {{ f.userInfo.username }}
+            </div>
+            <div class="text-muted tiny">
+              <i class="bi bi-journal-text me-1"></i>{{ f.courseInfo.title }}
+            </div>
+          </div>
+        </div>
+
+        <p class="feedback-text small fst-italic mb-3">
+          “{{ f.feedback }}”
+        </p>
+
+
+        <div class="d-flex justify-content-between align-items-center">
+          <small class="text-secondary tiny">
+            <i class="bi bi-calendar3 me-1"></i>{{ f.createdAt | date:'dd MMM yyyy' }}
+          </small>
+
+          <span class="rating-stars">
+            <ng-container *ngFor="let s of [1,2,3,4,5]; let i = index">
+              <i
+                class="bi"
+                [ngClass]="
+                  i < (f.rating || 3)
+                    ? 'bi-star-fill text-warning'
+                    : 'bi-star text-muted'
+                "
+              ></i>
+            </ng-container>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!feedbackDetails.length" class="text-center py-5 text-muted">
+    <i class="bi bi-inbox display-6 d-block mb-2"></i>
+    <p class="mb-0 fw-semibold">No feedbacks available yet.</p>
+    <p class="small">Feedbacks will appear here once users submit reviews.</p>
+  </div>
+</div>

@@ -1,0 +1,598 @@
+<div class="app-shell d-flex" id="wrapper">
+  <aside class="left-sidebar bg-teal" id="sidebar">
+    <div
+      class="brand pe-3 py-4 d-flex align-items-center justify-content-start gap-2"
+    >
+      <div class="logo-mark d-flex align-items-center justify-content-center">
+        <i class="bi bi-circle-fill"></i>
+      </div>
+      <h4 class="m-0 fw-bold text-light">LMS Menu</h4>
+    </div>
+
+    <ul class="sidebar-nav nav flex-column mt-3 pe-3">
+      <li
+        class="nav-item mb-1"
+        *ngIf="User === 'Admin' || User === 'mentor' || User === 'student'"
+      >
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-house-door me-2"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'Admin'">
+        <a
+          routerLink="Users"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-people me-2"></i>
+          <span>Users Management</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'Admin'">
+        <a
+          routerLink="addUsers"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-person-plus me-2"></i>
+          <span>Create Account</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'mentor'">
+        <a
+          routerLink="course_Details"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-journal-plus me-2"></i>
+          <span>Course Manage</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'Admin'">
+        <a
+          routerLink="courseApprovals"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-check2-square me-2"></i>
+          <span>Approvals</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'mentor'">
+        <a
+          routerLink="approvedCourses"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-bookmark-check me-2"></i>
+          <span>Courses</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'student'">
+        <a
+          routerLink="Courses"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-journal-plus me-2"></i>
+          <span>Course Details</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'student'">
+        <a
+          routerLink="coursePurschased"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-mortarboard me-2"></i>
+          <span>Learnings</span>
+        </a>
+      </li>
+
+      <li class="nav-item mb-1" *ngIf="User === 'Admin'">
+        <a
+          routerLink="ReportFeedback"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-journal-text me-2"></i>
+          <span>Feedbacks</span>
+        </a>
+      </li>
+      <li class="nav-item mb-1" *ngIf="User === 'mentor' || User === 'student'">
+        <a
+          routerLink="mentorAnnouncement"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-megaphone me-2"></i>
+          <span>Announcement</span>
+        </a>
+      </li>
+      <li class="nav-item mb-1" *ngIf="User === 'student' || User === 'mentor'">
+        <a
+          routerLink="discussion"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-chat-dots me-2"></i>
+          <span>Discussions</span>
+        </a>
+      </li>
+      <li class="nav-item mb-1" *ngIf="User === 'mentor' || User === 'student'">
+        <a
+          routerLink="demoQuiz"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-pencil-square me-2"></i>
+          <span>Practice Quiz</span>
+        </a>
+      </li>
+      <li
+        class="nav-item mb-1"
+        *ngIf="User === 'mentor' || User === 'student' || User === 'Admin'"
+      >
+        <a
+          routerLink="chat"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-person-fill-down me-2"></i>
+          <span>Polling</span>
+        </a>
+      </li>
+      <li
+        class="nav-item mb-1"
+        *ngIf="User === 'mentor' || User === 'student' || User === 'Admin'"
+      >
+        <a
+          routerLink="Interactions"
+          routerLinkActive="active"
+          class="nav-link d-flex align-items-center"
+        >
+          <i class="bi bi-wechat me-2"></i>
+          <span>Interactions</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-cta mt-auto mb-4 d-flex justify-content-center">
+      <button class="cta-btn" (click)="toggleSidebar()">
+        <i class="bi bi-gear-wide-connected"></i>
+      </button>
+    </div>
+  </aside>
+
+  <div id="page-content-wrapper" class="flex-grow-1">
+    <nav class="topbar navbar navbar-light px-4 py-3 sticky-top">
+      <div class="d-flex justify-content-between w-100 align-items-center">
+        <button class="btn menu-toggle d-lg-none" (click)="toggleSidebar()">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+
+        <div class="d-flex align-items-center gap-4 w-100">
+          <div class="search-wrapper d-flex align-items-center">
+            <i class="bi bi-search me-2"></i>
+            <input
+              class="search-input"
+              type="text"
+              placeholder="Search for names, products, enterprises and categories..."
+            />
+          </div>
+
+          <h5 class="fw-semibold m-0 page-title">
+            {{
+              router.url === "/dashboard"
+                ? "Dashboard Overview"
+                : router.url.includes("addUsers")
+                ? "Add New Users"
+                : router.url.includes("Users")
+                ? "Manage Users"
+                : router.url.includes("course_Details")
+                ? "Courses Management"
+                : router.url.includes("courseApprovals")
+                ? "Course Approvals"
+                : router.url.includes("approvedCourses")
+                ? "Approved Courses"
+                : router.url.includes("mentorAnnouncement")
+                ? "Announcement"
+                : router.url.includes("coursePurschased")
+                ? "My Learning"
+                : router.url.includes("ReportFeedback")
+                ? "Feedbacks & Reports"
+                : router.url.includes("Courses")
+                ? "Courses"
+                : router.url.includes("discussion")
+                ? "Discussions"
+                : router.url.includes("demoQuiz")
+                ? "Quiz"
+                : router.url.includes("chat")
+                ? "Polling"
+                : "Dashboard"
+            }}
+          </h5>
+
+          <div class="ms-auto d-flex align-items-center gap-3">
+            <button class="icon-btn" (click)="toggleNotifications()">
+              <i class="bi bi-bell"></i>
+            </button>
+            <div class="notification-dropdown" *ngIf="showNotifications">
+              <p class="fw-semibold mb-2">Notifications</p>
+              <div *ngIf="notifications.length > 0; else noNoti">
+                <div *ngFor="let n of notifications" class="notification-item">
+                  <i class="bi bi-dot text-success me-2"></i>{{ n }}
+                </div>
+              </div>
+              <ng-template #noNoti>
+                <div class="text-muted small">No new notifications</div>
+              </ng-template>
+            </div>
+
+            <button class="icon-btn" (click)="toggleCalendar()">
+              <i class="bi bi-calendar-event"></i>
+            </button>
+
+            <div class="calendar-container" *ngIf="showCalendar">
+              <div class="calendar-header">
+                <i class="bi bi-calendar3 text-teal"></i>
+                <span>Select a date</span>
+              </div>
+              <input
+                type="date"
+                class="calendar-picker"
+                (change)="onDateSelected($event)"
+              />
+            </div>
+
+            <div class="position-relative">
+              <button
+                class="user-btn d-flex align-items-center"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#userMenu"
+                aria-expanded="false"
+                aria-controls="userMenu"
+              >
+                <div
+                  class="profile-icon d-flex align-items-center justify-content-center me-2"
+                >
+                  <i class="bi bi-person-fill fs-5 text-white"></i>
+                </div>
+                <div class="d-none d-md-block text-start">
+                  <div class="username small fw-semibold">{{ username }}</div>
+                  <div class="role small text-muted">{{ User }}</div>
+                </div>
+                <i class="bi bi-caret-down-fill ms-2 small"></i>
+              </button>
+
+              <div
+                class="collapse user-collapse position-absolute end-0 mt-2"
+                id="userMenu"
+              >
+                <div class="card border-0 rounded-4 user-dropdown">
+                  <div class="card-body p-3">
+                    <div class="d-flex">
+                      <div class="profile-icon me-3">
+                        <i class="bi bi-person-fill fs-3 text-white"></i>
+                      </div>
+                      <div>
+                        <h6 class="mb-0 fw-semibold text-dark">
+                          {{ username }}
+                        </h6>
+                        <p class="mb-0 text-muted small">{{ email }}</p>
+                        <!-- <span
+                          class="badge mt-1 text-capitalize"
+                          [ngClass]="{
+                            'badge-mentor': User === 'mentor',
+                            'badge-student': User === 'student',
+                            'badge-admin': User === 'Admin'
+                          }"
+                          >{{ User }}</span
+                        > -->
+                      </div>
+                    </div>
+
+                    <hr class="my-2" />
+
+                    <button
+                      class="btn btn-sm btn-outline-danger w-100"
+                      (click)="logout()"
+                    >
+                      <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid dashboard-layout p-4">
+      <div
+        class="container-fluid dashboard-layout p-4"
+        *ngIf="router.url === '/dashboard'"
+      >
+        <div class="row g-4 align-items-stretch">
+          <div class="col-12">
+            <div class="row g-4">
+              <div class="col-lg-3 col-md-6">
+                <div class="card-stat revenue orange">
+                  <div class="card-body">
+                    <small class="muted">Total Cost</small>
+                    <h3 class="stat-value">
+                      {{ "₹" + total_user }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6">
+                <div class="card-stat white">
+                  <div class="card-body">
+                    <small class="muted">Total Courses</small>
+                    <h3 class="stat-value">
+                      {{ course_count ? course_count : "—" }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6">
+                <div class="card-stat white">
+                  <div class="card-body">
+                    <small class="muted">Total Mentors</small>
+                    <h3 class="stat-value">
+                      {{ mentor_count ? mentor_count : "—" }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6">
+                <div class="card-stat white">
+                  <div class="card-body">
+                    <small class="muted">Total Students</small>
+                    <h3 class="stat-value">
+                      {{ student_count ? student_count : "—" }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div
+                  class="analytics-card p-3"
+                  *ngIf="User === 'mentor' || User === 'Admin'"
+                >
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <h5 class="mb-0">Sales Analytics</h5>
+                    <div class="btn-group">
+                      <button class="btn btn-period active">Week</button>
+                      <button class="btn btn-period">Month</button>
+                      <button class="btn btn-period">Year</button>
+                    </div>
+                  </div>
+                  <div class="chart-wrap">
+                    <canvas id="salesChart" height="150"></canvas>
+                  </div>
+                </div>
+                <div
+                  *ngIf="User === 'student'"
+                  class="card shadow-sm border-0 rounded-4 p-3 text-center"
+                  style="max-width: 550px; margin: auto; background: #f9fafc"
+                >
+                  <h4 class="fw-bold text-dark mb-3">Overall Performance</h4>
+
+                  <div
+                    class="d-flex flex-wrap align-items-center justify-content-center gap-3"
+                  >
+                    <div
+                      class="chart-container d-flex justify-content-center align-items-center"
+                      style="flex: 1 1 180px"
+                    >
+                      <canvas
+                        id="performanceChart"
+                        width="180"
+                        height="180"
+                      ></canvas>
+                    </div>
+
+                    <div
+                      class="performance-data text-start bg-white shadow-sm rounded-3 text-muted px-3"
+                      style="flex: 1 1 180px"
+                    >
+                      <p class="fs-6 mb-2">
+                        <strong>Total Questions: </strong>
+                        <span class="text-primary">{{ totalQuestion }}</span>
+                      </p>
+                      <p class="fs-6 mb-2">
+                        <strong>Correct Answers: </strong>
+                        <span class="text-success">{{ score }}</span>
+                      </p>
+                      <p class="fs-6 mb-2">
+                        <strong>Accuracy: </strong>
+                        <span class="text-info">{{ accuracy }}%</span>
+                      </p>
+                      <p class="fs-6 mb-2">
+                        <strong>Attempts: </strong>
+                        <span class="text-info">{{ attempt }}</span>
+                      </p>
+                      <p class="fs-6 mb-0">
+                        <strong>Date:</strong>
+                        <span class="text-info">{{
+                          date | date : "dd-MMM-yyyy"
+                        }}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="side-card p-3">
+                  <h6>Highest Selling</h6>
+                  <div
+                    class="top-product d-flex align-items-center mt-3 flex-wrap"
+                  >
+                    <img
+                      src="../../assets/ui-ux-representations-with-laptop.jpg"
+                      alt="product"
+                      class="product-img rounded-4 me-3"
+                    />
+                    <div>
+                      <div class="fw-semibold">
+                        {{ highestSelling?.title || "—" }}
+                      </div>
+                      <div class="muted small">
+                        {{ highestSelling?.mentorname || "" }}
+                      </div>
+                      <div class="price mt-2">
+                        {{
+                          highestSelling?.price
+                            ? "₹" + highestSelling.price
+                            : ""
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <div class="recent-card p-3">
+              <div
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <h5 class="mb-0">Latest Course</h5>
+                <div class="periods">
+                  <button class="btn btn-period active">Week</button>
+                  <button class="btn btn-period">Month</button>
+                  <button class="btn btn-period">Year</button>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>Course Name</th>
+                      <th>Posted Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Mentor Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let r of latestCourse">
+                      <td class="d-flex align-items-center">
+                        {{ r.title }}
+                      </td>
+                      <td>{{ r.createdAt | date : "mediumDate" }}</td>
+                      <td>
+                        {{ r.pricing === "0" ? "Free" : "₹" + r.pricing }}
+                      </td>
+                      <td>
+                        <span
+                          class="status badge bg-success"
+                          [ngClass]="r.status?.toLowerCase()"
+                          >{{ r.status }}</span
+                        >
+                      </td>
+                      <td>{{ r.mentorname }}</td>
+                    </tr>
+                    <tr *ngIf="latestCourse.length === 0">
+                      <td colspan="5" class="text-center muted">
+                        No recent orders found
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="ann-card p-3 mb-4">
+              <h5>Announcements</h5>
+              <div class="ann-list mt-3">
+                <div
+                  class="ann-item mb-3"
+                  *ngFor="let a of announcements | slice : 0 : 5"
+                >
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <div class="fw-semibold">{{ a.title }}</div>
+                      <div class="muted small">{{ a.content }}</div>
+                    </div>
+                    <div class="muted small">{{ a.date | date : "short" }}</div>
+                  </div>
+                </div>
+                <div *ngIf="announcements.length === 0" class="muted small">
+                  No announcements
+                </div>
+              </div>
+            </div>
+
+            <div class="mini-cards">
+              <div class="mini-card p-3 mb-3">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <div class="muted small">Cloud storage</div>
+                    <div class="fw-semibold">
+                      {{ usedStorage }}GB / {{ totalStorage }}GB
+                    </div>
+                  </div>
+                  <div class="storage-progress">
+                    <div
+                      class="progress rounded-pill"
+                      style="height: 10px; width: 70px"
+                    >
+                      <div
+                        class="progress-bar"
+                        role="progressbar"
+                        [style.width.%]="storagePercentage"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card p-3" *ngIf="User === 'Admin'">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div class="muted small">Messages</div>
+                    <div class="fw-semibold">{{ newMessages }}</div>
+                  </div>
+                  <i class="bi bi-chat-dots fs-3 text-primary"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

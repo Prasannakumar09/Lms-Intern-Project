@@ -1,0 +1,204 @@
+<div class="discussion-container p-4 rounded-4 shadow-sm">
+  <div class="discussion-header d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0 text-gradient">
+      <i class="bi bi-chat-left-dots-fill me-2"></i>Discussions
+    </h4>
+
+    <div class="d-flex align-items-center gap-2 ">
+      <input
+        type="date"
+        class="form-control form-control-sm"
+        [(ngModel)]="selectedDate"
+        (change)="filterByDate()"
+      />
+      <button
+        class="btn btn-outline-theme btn-sm fw-semibold rounded-3"
+        data-bs-toggle="modal"
+        data-bs-target="#askQuestionModal"
+        *ngIf="User === 'student'"
+      >
+        <i class="bi bi-plus-circle me-1"></i> Ask Question
+      </button>
+    </div>
+  </div>
+
+
+  <div *ngFor="let discussion of filteredDiscussions" class="discussion-card p-4 mb-4 rounded-4 shadow-sm">
+    <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap">
+      <h6 class="fw-semibold text-theme mb-1">
+        <i class="bi bi-question-circle me-2"></i>{{ discussion.question }}
+      </h6>
+      <span class="text-muted small">{{ discussion.createdAt | date:'yyyy-MMM-dd' }}</span>
+    </div>
+
+    <p class="text-secondary small mb-3">{{ discussion.details }}</p>
+
+    <div *ngFor="let ans of discussion.answer" class="answers p-3 rounded-4 mb-2 bg-glass">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="fw-semibold text-theme mb-0">
+          <i class="bi bi-chat-right-dots me-1"></i> Mentor Reply
+        </h6>
+        <span class="text-muted small">— {{ ans.mentorname }}</span>
+      </div>
+      <p class="text-dark small mb-0">{{ ans.answer }}</p>
+    </div>
+
+    <div class="text-end mt-3" *ngIf="User === 'mentor'">
+      <button
+        class="btn btn-theme btn-sm fw-semibold px-3 py-1"
+        data-bs-toggle="modal"
+        data-bs-target="#answerModal"
+        (click)="reply(discussion._id)"
+      >
+        <i class="bi bi-reply-fill me-1"></i> Reply
+      </button>
+    </div>
+  </div>
+
+  <div class="text-center fw-bold fs-5 mt-5 text-muted" *ngIf="filteredDiscussions.length === 0">
+    No Discussions Found for the Selected Date.
+  </div>
+</div>
+
+<div class="modal fade" id="askQuestionModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-theme text-white rounded-top-4 py-3">
+        <h6 class="modal-title mb-0 fw-semibold">
+          <i class="bi bi-chat-left-text me-2"></i>Ask a Question
+        </h6>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body p-3">
+        <form [formGroup]="questionForm" (ngSubmit)="submitQuestion()">
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Question</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="Enter your question"
+              formControlName="question"
+              [ngClass]="{
+                'is-invalid':
+                  questionForm.get('question')?.touched &&
+                  questionForm.get('question')?.invalid,
+                'is-valid':
+                  questionForm.get('question')?.touched &&
+                  questionForm.get('question')?.valid
+              }"
+            />
+            <div class="invalid-feedback small">Question is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Category</label>
+            <select
+              class="form-select form-select-sm"
+              formControlName="category"
+              [ngClass]="{
+                'is-invalid':
+                  questionForm.get('category')?.touched &&
+                  questionForm.get('category')?.invalid,
+                'is-valid':
+                  questionForm.get('category')?.touched &&
+                  questionForm.get('category')?.valid
+              }"
+            >
+              <option value="">Select category</option>
+              <option>Development</option>
+              <option>Design</option>
+              <option>Marketing</option>
+            </select>
+            <div class="invalid-feedback small">Please select a category.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Details</label>
+            <textarea
+              rows="3"
+              class="form-control form-control-sm"
+              placeholder="Provide additional context"
+              formControlName="details"
+              [ngClass]="{
+                'is-invalid':
+                  questionForm.get('details')?.touched &&
+                  questionForm.get('details')?.invalid,
+                'is-valid':
+                  questionForm.get('details')?.touched &&
+                  questionForm.get('details')?.valid
+              }"
+            ></textarea>
+            <div class="invalid-feedback small">
+              Please provide more details.
+            </div>
+          </div>
+
+          <div class="text-end">
+            <button
+              type="submit"
+              class="btn btn-theme btn-sm"
+              [disabled]="questionForm.invalid"
+            >
+              <i class="bi bi-send-fill me-1"></i> Post
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="answerModal"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content lavender-modal">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="feedbackModalLabel">Share Your Reply</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      
+      <form [formGroup]="answerForm" (ngSubmit)="replyToQuestion()">
+        <div class="modal-body">
+          <textarea
+            class="form-control lavender-textarea"
+            formControlName="answer"
+            rows="5"
+            placeholder="Write your thoughts..."
+          ></textarea>
+
+          
+          <div
+            *ngIf="answerForm.get('answer')?.touched && answerForm.get('answer')?.invalid"
+            class="text-danger mt-2"
+            style="font-size: smaller;"
+          >
+            Reply is required and must be at least 10 characters long.
+          </div>
+        </div>
+
+        <div class="modal-footer border-0">
+          <button
+            type="submit"
+            class="btn-feedback"
+            [disabled]="answerForm.invalid"
+            data-bs-dismiss="modal"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
