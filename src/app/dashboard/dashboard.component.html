@@ -8,7 +8,6 @@
       </div>
       <h4 class="m-0 fw-bold text-light">LMS Menu</h4>
     </div>
-
     <ul class="sidebar-nav nav flex-column mt-3 pe-3">
       <li
         class="nav-item mb-1"
@@ -24,7 +23,6 @@
           <span>Dashboard</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'Admin'">
         <a
           routerLink="Users"
@@ -32,10 +30,9 @@
           class="nav-link d-flex align-items-center"
         >
           <i class="bi bi-people me-2"></i>
-          <span>Users Management</span>
+          <span>Users Manage</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'Admin'">
         <a
           routerLink="addUsers"
@@ -46,7 +43,6 @@
           <span>Create Account</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'mentor'">
         <a
           routerLink="course_Details"
@@ -57,7 +53,6 @@
           <span>Course Manage</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'Admin'">
         <a
           routerLink="courseApprovals"
@@ -68,7 +63,6 @@
           <span>Approvals</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'mentor'">
         <a
           routerLink="approvedCourses"
@@ -79,7 +73,6 @@
           <span>Courses</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'student'">
         <a
           routerLink="Courses"
@@ -90,7 +83,6 @@
           <span>Course Details</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'student'">
         <a
           routerLink="coursePurschased"
@@ -101,7 +93,6 @@
           <span>Learnings</span>
         </a>
       </li>
-
       <li class="nav-item mb-1" *ngIf="User === 'Admin'">
         <a
           routerLink="ReportFeedback"
@@ -147,19 +138,6 @@
         *ngIf="User === 'mentor' || User === 'student' || User === 'Admin'"
       >
         <a
-          routerLink="chat"
-          routerLinkActive="active"
-          class="nav-link d-flex align-items-center"
-        >
-          <i class="bi bi-person-fill-down me-2"></i>
-          <span>Polling</span>
-        </a>
-      </li>
-      <li
-        class="nav-item mb-1"
-        *ngIf="User === 'mentor' || User === 'student' || User === 'Admin'"
-      >
-        <a
           routerLink="Interactions"
           routerLinkActive="active"
           class="nav-link d-flex align-items-center"
@@ -175,14 +153,12 @@
       </button>
     </div>
   </aside>
-
   <div id="page-content-wrapper" class="flex-grow-1">
     <nav class="topbar navbar navbar-light px-4 py-3 sticky-top">
       <div class="d-flex justify-content-between w-100 align-items-center">
         <button class="btn menu-toggle d-lg-none" (click)="toggleSidebar()">
           <i class="bi bi-list fs-4"></i>
         </button>
-        <!-- test -->
         <div class="d-flex align-items-center gap-4 w-100">
           <div class="search-wrapper d-flex align-items-center">
             <i class="bi bi-search me-2"></i>
@@ -192,7 +168,6 @@
               placeholder="Search for names, products, enterprises and categories..."
             />
           </div>
-
           <h5 class="fw-semibold m-0 page-title">
             {{
               router.url === "/dashboard"
@@ -219,12 +194,9 @@
                 ? "Discussions"
                 : router.url.includes("demoQuiz")
                 ? "Quiz"
-                : router.url.includes("chat")
-                ? "Polling"
                 : "Dashboard"
             }}
           </h5>
-
           <div class="ms-auto d-flex align-items-center gap-3">
             <button class="icon-btn" (click)="toggleNotifications()">
               <i class="bi bi-bell"></i>
@@ -240,11 +212,9 @@
                 <div class="text-muted small">No new notifications</div>
               </ng-template>
             </div>
-
             <button class="icon-btn" (click)="toggleCalendar()">
               <i class="bi bi-calendar-event"></i>
             </button>
-
             <div class="calendar-container" *ngIf="showCalendar">
               <div class="calendar-header">
                 <i class="bi bi-calendar3 text-teal"></i>
@@ -256,7 +226,6 @@
                 (change)="onDateSelected($event)"
               />
             </div>
-
             <div class="position-relative">
               <button
                 class="user-btn d-flex align-items-center"
@@ -277,7 +246,6 @@
                 </div>
                 <i class="bi bi-caret-down-fill ms-2 small"></i>
               </button>
-
               <div
                 class="collapse user-collapse position-absolute end-0 mt-2"
                 id="userMenu"
@@ -293,20 +261,9 @@
                           {{ username }}
                         </h6>
                         <p class="mb-0 text-muted small">{{ email }}</p>
-                        <!-- <span
-                          class="badge mt-1 text-capitalize"
-                          [ngClass]="{
-                            'badge-mentor': User === 'mentor',
-                            'badge-student': User === 'student',
-                            'badge-admin': User === 'Admin'
-                          }"
-                          >{{ User }}</span
-                        > -->
                       </div>
                     </div>
-
                     <hr class="my-2" />
-
                     <button
                       class="btn btn-sm btn-outline-danger w-100"
                       (click)="logout()"
@@ -321,7 +278,6 @@
         </div>
       </div>
     </nav>
-
     <div class="container-fluid dashboard-layout p-4">
       <div
         class="container-fluid dashboard-layout p-4"
@@ -340,7 +296,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-3 col-md-6">
                 <div class="card-stat white">
                   <div class="card-body">
@@ -351,7 +306,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-3 col-md-6">
                 <div class="card-stat white">
                   <div class="card-body">
@@ -362,7 +316,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-3 col-md-6">
                 <div class="card-stat white">
                   <div class="card-body">
@@ -373,7 +326,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <div
                   class="analytics-card p-3"
@@ -399,7 +351,6 @@
                   style="max-width: 550px; margin: auto; background: #f9fafc"
                 >
                   <h4 class="fw-bold text-dark mb-3">Overall Performance</h4>
-
                   <div
                     class="d-flex flex-wrap align-items-center justify-content-center gap-3"
                   >
@@ -413,7 +364,6 @@
                         height="180"
                       ></canvas>
                     </div>
-
                     <div
                       class="performance-data text-start bg-white shadow-sm rounded-3 text-muted px-3"
                       style="flex: 1 1 180px"
@@ -444,7 +394,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <div class="side-card p-3">
                   <h6>Highest Selling</h6>
@@ -476,7 +425,6 @@
               </div>
             </div>
           </div>
-
           <div class="col-lg-8">
             <div class="recent-card p-3">
               <div
@@ -489,7 +437,6 @@
                   <button class="btn btn-period">Year</button>
                 </div>
               </div>
-
               <div class="table-responsive">
                 <table class="table align-middle">
                   <thead>
@@ -529,14 +476,13 @@
               </div>
             </div>
           </div>
-
           <div class="col-lg-4">
             <div class="ann-card p-3 mb-4">
               <h5>Announcements</h5>
               <div class="ann-list mt-3">
                 <div
                   class="ann-item mb-3"
-                  *ngFor="let a of announcements | slice : 0 : 5"
+                  *ngFor="let a of announcements | slice : 0 : 2"
                 >
                   <div class="d-flex justify-content-between">
                     <div>
@@ -551,7 +497,6 @@
                 </div>
               </div>
             </div>
-
             <div class="mini-cards">
               <div class="mini-card p-3 mb-3">
                 <div class="d-flex justify-content-between">
@@ -575,7 +520,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="mini-card p-3" *ngIf="User === 'Admin'">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
@@ -589,7 +533,6 @@
           </div>
         </div>
       </div>
-
       <div class="mt-4">
         <router-outlet></router-outlet>
       </div>

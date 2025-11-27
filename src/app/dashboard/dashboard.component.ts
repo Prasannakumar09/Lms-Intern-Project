@@ -25,12 +25,12 @@ export class DashboardComponent implements OnInit,AfterViewInit {
   mentor_count = '';
   student_count = '';
   course_count = '';
-
+  sidebarCollapsed=false;
   storagePercentage = 26;
   usedStorage = 4.8;
   totalStorage = 20;
   newMessages = '';
-
+  isSidebarCollapsed=false;
   searchQuery = '';
   showNotifications = false;
   showCalendar = false;

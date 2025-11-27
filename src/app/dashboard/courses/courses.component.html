@@ -77,7 +77,7 @@
             <td class="fw-semibold">{{ course.title }}</td>
             <td>{{ course.description.slice(0, 15) + "..." }}</td>
             <td>{{ course.category }}</td>
-            <td>${{ course.pricing }}</td>
+            <td>₹{{ course.pricing }}</td>
             <td>{{ course.mentorname }}</td>
             <td>
               <div class="dropdown">
@@ -120,7 +120,7 @@
       </table>
     </div>
 
-    <div class="pagination-container fixed-pagination py-3 shadow-sm bg-white">
+    <div class="pagination-container fixed-pagination py-2 shadow-sm bg-white rounded-bottom-4">
       <button
         class="btn btn-sm lavender-btn me-2"
         [disabled]="currentPage === 1"

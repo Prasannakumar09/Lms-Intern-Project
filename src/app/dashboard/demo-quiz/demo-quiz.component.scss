@@ -185,6 +185,60 @@
   gap: 1.5rem;
   overflow-y: auto;
 }
+/* 📱 MOBILE VIEW */
+@media (max-width: 768px) {
+
+  .quiz-fullscreen {
+    flex-direction: column;       /* Stack vertically */
+    padding: 0.8rem;
+    height: auto;
+  }
+
+  .exit-btn-container {
+    text-align: right;
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar {
+    order: 1;                   /* Sidebar FIRST */
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+
+  .quiz-content {
+    order: 2;                   /* Questions SECOND */
+    width: 100%;
+  }
+
+  /* Make question card full width */
+  .quiz-card {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Options should be big and easy to press */
+  .option-btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  /* Question grid becomes smaller buttons */
+  .question-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 per row */
+    gap: 8px;
+  }
+
+  .question-btn {
+    padding: 6px 0;
+    font-size: 12px;
+  }
+
+  .timer-display {
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+}
 
 .exit-btn-container {
   position: absolute;
@@ -196,7 +250,9 @@
   max-width: 800px;
   margin: auto;
 }
-
+.answer-card {
+  border-left: 5px solid #0d6efd;
+}
 .sidebar {
   width: 300px;
 }

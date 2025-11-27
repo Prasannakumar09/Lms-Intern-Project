@@ -105,13 +105,6 @@ const routes: Routes = [
         data: { roles: ['mentor', 'student'] },
       },
       {
-        path: 'chat',
-        loadChildren: () =>
-          import('./chat/chat.module').then((m) => m.ChatModule),
-        canActivate: [RoleguardService],
-        data: { roles: ['Admin', 'mentor', 'student'] },
-      },
-      {
         path: 'Interactions',
         loadChildren: () =>
           import('./interactions/interactions.module').then(

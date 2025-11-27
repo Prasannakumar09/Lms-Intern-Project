@@ -1,51 +1,112 @@
-<div class="announcement-wrapper rounded-3">
-  <div class="chat-container">
-    <div class="row chat-messages p-3" *ngFor="let chat of chattings">
-      <div class="col-12 d-flex justify-content-end" *ngIf="name === chat.username">
-        <div class="chat-right">
-          <div class="chat-header d-flex justify-content-between">
-            <span class="chat-name me-3">{{chat.username}}</span>
-            <span class="chat-role">~{{chat.role}}</span>
+<div class="announcement-wrapper" (click)="closePollPopup()">
+  <div class="chat-container" #chatContainer>
+    <ng-container *ngFor="let chat of chattings">
+      <div class="chat-row" [ngClass]="{ 'me': name === chat.username }">
+        <div class="chat-bubble">
+          <div class="chat-header">
+            <span class="chat-name">{{ chat.username }}</span>
+            <small class="chat-role">~{{ chat.role }}</small>
           </div>
-          <div class="chat-body">
-            <span>{{chat.message}}</span>
-          </div>
-          <div class="chat-footer">
-            <span class="chat-time">{{chat.createdAt | date:'shortTime'}}</span>
-          </div>
+
+          <div class="chat-body">{{ chat.message }}</div>
+
+          <div class="chat-footer">{{ chat.createdAt | date: 'shortTime' }}</div>
         </div>
       </div>
+    </ng-container>
+  </div>
+  <div class="chat-input-area" (click)="$event.stopPropagation()">
+    <button class="poll-fab" (click)="togglePoll($event)" [attr.aria-expanded]="isPollOpen" title="Open Polls">
+      <i class="bi bi-bar-chart-line-fill"></i>
+    </button>
+    <div #pollPopup class="poll-popup" [class.open]="isPollOpen" (click)="$event.stopPropagation()">
+      <div class="popup-header">
+        <strong>Polls</strong>
+        <button class="popup-close" (click)="isPollOpen = false" aria-label="Close poll popup">✕</button>
+      </div>
 
-      <div class="col-12 d-flex justify-content-start" *ngIf="name !== chat.username">
-        <div class="chat-left">
-          <div class="chat-header d-flex justify-content-between">
-            <span class="chat-name me-3">{{chat.username}}</span>
-            <span class="chat-role">~{{chat.role}}</span>
+      <div class="popup-body">
+        <form [formGroup]="pollForm" *ngIf="role === 'Admin' || role === 'mentor'" (ngSubmit)="createPoll()">
+          <div class="create-mini">
+            <input formControlName="question" class="form-control mb-2" placeholder="Ask a question..." />
+            <div formArrayName="options" class="mb-2">
+              <div *ngFor="let opt of options.controls; let i = index" class="d-flex gap-2 mb-1">
+                <input [formControlName]="i" class="form-control" placeholder="Option {{ i + 1 }}" />
+                <button
+                  *ngIf="options.length > 2"
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  (click)="removeOption(i)"
+                  aria-label="Remove option"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-primary btn-sm flex-fill" (click)="addOption()">+ Option</button>
+              <button type="submit" class="btn btn-primary btn-sm flex-fill" [disabled]="creatingPoll">
+                {{ creatingPoll ? 'Creating...' : 'Create' }}
+              </button>
+            </div>
           </div>
-          <div class="chat-body">
-            <span>{{chat.message}}</span>
-          </div>
-          <div class="chat-footer">
-            <span class="chat-time">{{chat.createdAt | date:'shortTime'}}</span>
+        </form>
+        <div *ngIf="polls?.length; else noPolls">
+          <div *ngFor="let poll of polls" class="poll-mini">
+            <div class="poll-top">
+              <div class="poll-q">{{ poll.question }}</div>
+              <small class="poll-date">{{ poll.createdAt | date: 'MMM dd' }}</small>
+            </div>
+
+            <div *ngFor="let opt of poll.options" class="poll-opt" [ngClass]="{ voted: isUserVotedOption(poll, opt) }">
+              <label class="opt-row">
+                <input
+                  [type]="poll.multipleChoice ? 'checkbox' : 'radio'"
+                  [name]="poll._id"
+                  (change)="toggleSelection(poll, opt.optionId)"
+                  [disabled]="role !== 'student' || poll.votedUser?.includes(currentUserId)"
+                  [checked]="isOptionSelected(poll, opt.optionId)"
+                />
+                <span class="opt-text">{{ opt.text }}</span>
+                <span class="opt-pct">{{ getPercentage(opt.votes, poll.options) }}%</span>
+              </label>
+
+              <div class="mini-progress">
+                <div class="mini-fill" [style.width.%]="getPercentage(opt.votes, poll.options)"></div>
+              </div>
+            </div>
+
+            <div class="poll-actions">
+              <button
+                *ngIf="role === 'student' && !poll.votedUser?.includes(currentUserId)"
+                class="btn btn-success btn-sm flex-fill"
+                (click)="submitVote(poll._id)"
+                [disabled]="submittingVote[poll._id]"
+              >
+                {{ submittingVote[poll._id] ? 'Voting...' : 'Vote' }}
+              </button>
+
+              <button
+                *ngIf="role === 'mentor' || role === 'Admin'"
+                class="btn btn-danger btn-sm flex-fill ms-2"
+                (click)="deletePoll(poll._id)"
+                [disabled]="deletingPoll[poll._id]"
+              >
+                {{ deletingPoll[poll._id] ? 'Deleting...' : 'Delete' }}
+              </button>
+            </div>
           </div>
         </div>
+
+        <ng-template #noPolls>
+          <div class="no-polls">No polls yet</div>
+        </ng-template>
       </div>
     </div>
-  </div>
-
-  <div class="chat-input-area p-2">
-    <form
-      [formGroup]="messagein"
-      (ngSubmit)="send()"
-      class="d-flex align-items-center w-100"
-    >
-      <input
-        type="text"
-        class="form-control chat-input me-2"
-        formControlName="message"
-        placeholder="Type a message..."
-      />
-      <button class="btn btn-send" type="submit">
+    <form [formGroup]="messagein" (ngSubmit)="send()" class="d-flex align-items-center w-100 gap-2">
+      <input type="text" formControlName="message" class="form-control chat-input" placeholder="Type a message..." />
+      <button class="btn btn-send" type="submit" [disabled]="messagein.invalid">
         <i class="bi bi-send-fill"></i>
       </button>
     </form>
